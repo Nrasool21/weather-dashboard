@@ -1,14 +1,8 @@
-const citySearchForm = $("#city-search-form"); 
-const cityInput = $("#searchInput");
-const searchCityList = $("#search-city-list")
-
-
 const onSubmit = (event) => {
-    event.preventDefault();
-  //console.log(onSubmit)
-  const searchItems = cityInput.val(); 
-  
+  event.preventDefault();
+
+  const cityName = $("#city-input").val();
+  console.log(cityName);
 };
 
-
-  citySearchForm.on("submit", onSubmit);
+$("#search-by-city-form").on("submit", onSubmit);
