@@ -19,7 +19,31 @@ const onSubmit = (event) => {
 
   localStorage.setItem("cities", JSON.stringify(cities));
 
-  console.log(cities);
+  renderCitiesFromLocalStorage();
+  $("#city-input").val("");
+};
+
+const renderCitiesFromLocalStorage = () => {
+  $("#searched-cities").empty();
+  //get cities from local storage
+  const cities = getFromLocalStorage();
+
+  const ul = $("<ul>").addClass(".list-group");
+
+  const appendListItemToUl = (city) => {
+    const li = `<li class="list-group-item">${city}</li>`;
+    ul.append(li);
+    $("#searched-cities").append(ul);
+
+    console.log(city);
+  };
+
+  cities.forEach(appendListItemToUl);
+};
+
+const onReady = () => {
+  renderCitiesFromLocalStorage();
 };
 
 $("#search-by-city-form").on("submit", onSubmit);
+$(document).ready(onReady);
