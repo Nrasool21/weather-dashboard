@@ -8,6 +8,15 @@ const getFromLocalStorage = () => {
   }
 };
 
+
+  const getDataByCityName = (event) => {
+    const target = $(event.target);
+    if (target.is("li")) {
+      const cityName = target.data("city")
+    
+    }
+  };
+
 const onSubmit = (event) => {
   event.preventDefault();
 
@@ -31,14 +40,21 @@ const renderCitiesFromLocalStorage = () => {
   const ul = $("<ul>").addClass(".list-group");
 
   const appendListItemToUl = (city) => {
-    const li = `<li class="list-group-item">${city}</li>`;
+    
+    const li = $("<li>")
+      .addClass(".list-group-item")
+      .attr("data-city", city)
+      .text(city);
+    //li.on("click", onClick)
     ul.append(li);
-    $("#searched-cities").append(ul);
-
-    console.log(city);
   };
 
   cities.forEach(appendListItemToUl);
+
+
+  ul.on("click", getDataByCityName);
+
+  $("#searched-cities").append(ul);
 };
 
 const onReady = () => {
