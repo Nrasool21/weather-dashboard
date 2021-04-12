@@ -10,36 +10,25 @@ const getFromLocalStorage = () => {
   }
 };
 
-const fetchData = (cityName) => {
-  const functionForJSON = (responseObject) => {
-    // unless you have some logic here do that before you return
-    return responseObject.json();
-  };
-  const functionForApplication = (dataFromServer) => {
-    console.log(dataFromServer);
-  };
-  const functionToHandleError = (errorObject) => {
-    console.log(errorObject);
-  };
+const fetchData = async (url) => {
+  try {
+    const response = await fetch(url);
 
-  const url = `http://api.openweathermap.org/data/2.5/weather?q=${cityName},uk&APPID=${API_KEY}`;
-  
+    const data = await response.json();
 
-    fetch(url)
-    .then(functionForJSON)
-    .then(functionForApplication)
-    .catch(functionToHandleError);
+    return data;
+  } catch (error) {}
 };
 
 const getDataByCityName = (event) => {
   const target = $(event.target);
   if (target.is("li")) {
     const cityName = target.data("city");
-    fetchData(cityName); 
+    fetchData(cityName);
   }
 };
 
-const onSubmit = (event) => {
+const onSubmit = async (event) => {
   event.preventDefault();
 
   const cityName = $("#city-input").val();
@@ -52,8 +41,10 @@ const onSubmit = (event) => {
 
   renderCitiesFromLocalStorage();
   $("#city-input").val("");
-  
-  fetchData(cityName);
+
+  const url = `http://api.openweathermap.org/data/2.5/weather?q=${cityName},uk&APPID=${API_KEY}`;
+  const data = await fetchData(url);
+  console.log(data)
 };
 
 const renderCitiesFromLocalStorage = () => {
