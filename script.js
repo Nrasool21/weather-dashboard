@@ -25,7 +25,7 @@ const fetchData = (cityName) => {
   const url = `http://api.openweathermap.org/data/2.5/weather?q=${cityName},uk&APPID=${API_KEY}`;
   
 
-  http: fetch(url)
+    fetch(url)
     .then(functionForJSON)
     .then(functionForApplication)
     .catch(functionToHandleError);
@@ -35,6 +35,7 @@ const getDataByCityName = (event) => {
   const target = $(event.target);
   if (target.is("li")) {
     const cityName = target.data("city");
+    fetchData(cityName); 
   }
 };
 
@@ -51,8 +52,8 @@ const onSubmit = (event) => {
 
   renderCitiesFromLocalStorage();
   $("#city-input").val("");
-
-  fetchData();
+  
+  fetchData(cityName);
 };
 
 const renderCitiesFromLocalStorage = () => {
