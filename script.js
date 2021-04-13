@@ -28,12 +28,17 @@ const getDataByCityName = async (event) => {
   if (target.is("li")) {
     const cityName = target.data("city");
 
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&APPID=${API_KEY}`;
+    const currentDayUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=imperial&APPID=${API_KEY}`;
 
-    const data = await fetchData(url);
-    console.log(data);
+    const currentDayResponse = await fetchData(currentDayUrl);
 
-    const currentDayData = transformData(data);
+    const forecastUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${currentDayResponse.coord.lat}&lon=${currentDayResponse.coord.lon}&exclude=minutely,hourly&appid=${API_KEY}`;
+
+    const forecastResponse = await fetchData(forecastUrl);
+
+    console.log(forecastResponse);
+
+    const currentDayData = transformData(currentDayResponse);
 
     renderCurrentDayCard(currentDayData);
   }
@@ -100,13 +105,13 @@ const renderCurrentDayCard = (data) => {
     $("#current-day").empty(); 
 
   const card = `<div class="card my-2">
-                    <div class="card-body">
-                        <h2>${data.cityName}(${data.date})<img src="${data.iconURL}"/></h2>
-                        <div class="py-2">Temperature: ${data.temperature} &deg; C</div>
-                        <div class="py-2">Humidity: ${data.humidity} % </div>
-                        <div class="py-2">Wind Speed: ${data.windSpeed} MPH</div>
-                        <div class="py-2">UV Index: </div>
-                    </div>
+                <div class="card-body">
+                <h2>${data.cityName}(${data.date})<img src="${data.iconURL}"/></h2>
+                <div class="py-2">Temperature: ${data.temperature} &deg;F</div>
+                <div class="py-2">Humidity: ${data.humidity} % </div>
+                <div class="py-2">Wind Speed: ${data.windSpeed} MPH</div>
+                <div class="py-2">UV Index: </div>
+                </div>
                 </div>`;
 
   $("#current-day").append(card);
