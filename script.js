@@ -36,23 +36,37 @@ const getDataByCityName = async (event) => {
 
     const forecastResponse = await fetchData(forecastUrl);
 
+    //const forecastData = transformForecastData(forecastResponse);
+
+    //renderForecastCard()
+
     console.log(forecastResponse);
 
-    const currentDayData = transformData(currentDayResponse);
+    const currentDayData = transformCurrentDayData(currentDayResponse);
 
     renderCurrentDayCard(currentDayData);
   }
 };
 
-const transformData = (data) => {
-return {
-  cityName: data.name,
-  temperature: data.main.temp,
-  humidity: data.main.humidity,
-  windSpeed: data.wind.speed,
-  date: moment.unix(data.dt).format("MM-DD-YYYY"),
-  iconURL: `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
+const transformCurrentDayData = (data) => {
+  return {
+    cityName: data.name,
+    temperature: data.main.temp,
+    humidity: data.main.humidity,
+    windSpeed: data.wind.speed,
+    date: moment.unix(data.dt).format("MM-DD-YYYY"),
+    iconURL: `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
+  };
 };
+
+const transformForecastData = (data) => {
+
+return {
+    date: moment.unix(data.dt).format("MM-DD-YYYY"),
+    iconURL: `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
+    temperature: data.temp.day,
+    humidity: data.humidity, 
+}
 }
 
 const onSubmit = async (event) => {
@@ -72,7 +86,7 @@ const onSubmit = async (event) => {
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&APPID=${API_KEY}`;
   const data = await fetchData(url);
 
-const currentDayData = transformData (data)
+const currentDayData = transformCurrentDayData(data);
 
 renderCurrentDayCard(currentDayData);
  
@@ -83,11 +97,11 @@ const renderCitiesFromLocalStorage = () => {
   //get cities from local storage
   const cities = getFromLocalStorage();
 
-  const ul = $("<ul>").addClass(".list-group");
+  const ul = $("<ul>").addClass("list-group");
 
   const appendListItemToUl = (city) => {
     const li = $("<li>")
-      .addClass(".list-group-item")
+      .addClass("list-group-item")
       .attr("data-city", city)
       .text(city);
     ul.append(li);
@@ -115,10 +129,26 @@ const renderCurrentDayCard = (data) => {
                 </div>`;
 
   $("#current-day").append(card);
+  
 };
+
+const renderForecastCard = (data) => {
+
+    const card = `<div class="card mh-100 bg-primary text-light rounded card-block">
+                     <h5 class="card-title p-1">${data.date}</h5>
+                     <img src="${data.iconURL}"/>
+                     <h6 class="card-subtitle mb-2 text-light p-md-2 ">${data.temperature}&deg F</h6>
+                     <h6 class="card-subtitle mb-2 text-light p-md-2 ">${data.humidity}%</h6>
+                  </div>`;
+
+    $("#forecast-cards-container").append(card);
+    console.log(card);
+}
 
 const onReady = () => {
   renderCitiesFromLocalStorage();
+
+  renderForecastCard()
   
 };
 
