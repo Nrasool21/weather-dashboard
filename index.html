@@ -20,60 +20,77 @@
     <title><Weather-Dashboard></title>
   </head>
   <body>
-    <nav class="navbar navbar-dark bg-dark">
-      <div class="container-fluid">
-        <h1 class="navbar-brand mx-auto fs-2 p-3">Weather Dashboard</h1>
-      </div>
-    </nav>
     <header>
-      <main class="container-fluid">
-        <div class="row px-3">
-          <div class="col-sm-12 col-md-3 bg-light">
-            <div>
-              <h4>Search for a City:</h4>
-              <form
-                class="row row-cols-lg-auto g-3 align-items-center"
-                id="search-by-city-form"
-              >
-                <div class="col-12">
-                  <div class="input-group">
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="city-input"
-                      placeholder="city name"
-                    />
-                  </div>
-                </div>
-                <div class="col-12">
-                  <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-search"></i>
-                  </button>
-                </div>
-              </form>
-            </div>
-            <div class="my-4" id="searched-cities"></div>
-          </div>
-          <div class="col-md-9 col-sm-12">
-            <div class="row">
-              <div class="col-12" id="current-day"></div>
-            </div>
-            <div class="row">
+      <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+          <h1 class="navbar-brand mx-auto mb-0 fs-2 p-3">Weather Dashboard</h1>
+        </div>
+      </nav>
+    </header>
+    <main class="container-fluid">
+      <div class="row px-3">
+        <div class="col-sm-12 col-md-3 bg-light">
+          <div>
+            <h4 class="p-md-3">Search for a City:</h4>
+            <form
+              class="row row-cols-lg-auto g-3 align-items-center"
+              id="search-by-city-form">
               <div class="col-12">
-                <h2>5-Day Forecast</h2>
-                <div
-                  class="d-flex flex-wrap justify-content-around align-items-stretch"
-                  id="forecast-cards-container"
-                ></div>
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="city-input"
+                    placeholder="city name"
+                  />
+                </div>
               </div>
+
+              <div class="col-12">
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
+            </form>
+          </div>
+          <div class="my-4" id="searched-cities"></div>
+        </div>
+        <div class="col-md-9 col-sm-12">
+          <div class="row">
+            <div class="col-12" id="current-day">
+                <!-- 
+                <div class="card my-2">
+                    <div class="card-body">
+                        <h2 class="mb-4">London<span> (Date) </span><i> image </i></h2>
+                        <div class="py-2">Temperature: 86.8 &deg; C</div>
+                        <div class="py-2">Humidity: 43%</div>
+                        <div class="py-2">Wind Speed: 4.7 MPH</div>
+                        <div class="py-2">UV Index: </div>
+                    </div>
+                </div>
+                -->
+                </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+                <h2>5 Day Forecast</h2>
+               <div class="d-flex flex-wrap justify-content-around align-items-stretch" id="forecast-cards-container">
+                   <!--
+                  <div class="card mh-100 bg-primary text-light rounded card-block">
+                     <h5 class="card-title p-1">4/09/2021</h5><span class="p-md-2"><img src=""/>
+                     <h6 class="card-subtitle mb-2 text-light p-md-2 ">Temperature:value F</h6>
+                     <h6 class="card-subtitle mb-2 text-light p-md-2 ">Humidity:value %</h6>
+                  </div>
+                   -->
+                </div> 
             </div>
+            
           </div>
         </div>
-      </main>
-    </header>
+      </div>
+    </main>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript" src="./script.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
@@ -85,5 +102,6 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script type="text/javascript" src="./script.js"></script>
   </body>
 </html>
