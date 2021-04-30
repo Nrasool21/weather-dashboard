@@ -28,23 +28,7 @@ const getDataByCityName = async (event) => {
   if (target.is("li")) {
     const cityName = target.data("city");
 
-    const currentDayUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=imperial&APPID=${API_KEY}`;
-
-    const currentDayResponse = await fetchData(currentDayUrl);
-
-    const forecastUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${currentDayResponse.coord.lat}&lon=${currentDayResponse.coord.lon}&exclude=minutely,hourly&appid=${API_KEY}`;
-
-    const forecastResponse = await fetchData(forecastUrl);
-
-    //const forecastData = transformForecastData(forecastResponse);
-
-    //renderForecastCard()
-
-    console.log(forecastResponse);
-
-    const currentDayData = transformCurrentDayData(currentDayResponse);
-
-    renderCurrentDayCard(currentDayData);
+   renderAllCards(cityName);
   }
 };
 
@@ -83,14 +67,31 @@ const onSubmit = async (event) => {
   renderCitiesFromLocalStorage();
   $("#city-input").val("");
 
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&APPID=${API_KEY}`;
-  const data = await fetchData(url);
-
-const currentDayData = transformCurrentDayData(data);
-
-renderCurrentDayCard(currentDayData);
+  renderAllCards(cityName)
  
 };
+
+const renderAllCards = async (cityName) => {
+
+  const currentDayUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=imperial&APPID=${API_KEY}`;
+
+  const currentDayResponse = await fetchData(currentDayUrl);
+
+  const forecastUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${currentDayResponse.coord.lat}&lon=${currentDayResponse.coord.lon}&exclude=minutely,hourly&appid=${API_KEY}`;
+
+  const forecastResponse = await fetchData(forecastUrl);
+
+  const cardsData = forecastResponse.daily.map(transformForecastData);
+
+  $("#forecast-cards-container").empty();
+
+  cardsData.slice(1, 6).forEach(renderForecastCard);
+
+  const currentDayData = transformCurrentDayData(currentDayResponse);
+
+  renderCurrentDayCard(currentDayData);
+  
+}
 
 const renderCitiesFromLocalStorage = () => {
   $("#searched-cities").empty();
@@ -120,7 +121,7 @@ const renderCurrentDayCard = (data) => {
 
   const card = `<div class="card my-2">
                 <div class="card-body">
-                <h2>${data.cityName}(${data.date})<img src="${data.iconURL}"/></h2>
+                <h2>${data.cityName} (${data.date}) <img src="${data.iconURL}" /></h2>
                 <div class="py-2">Temperature: ${data.temperature} &deg;F</div>
                 <div class="py-2">Humidity: ${data.humidity} % </div>
                 <div class="py-2">Wind Speed: ${data.windSpeed} MPH</div>
@@ -142,13 +143,17 @@ const renderForecastCard = (data) => {
                   </div>`;
 
     $("#forecast-cards-container").append(card);
-    console.log(card);
+    
 }
 
 const onReady = () => {
   renderCitiesFromLocalStorage();
 
-  renderForecastCard()
+  const resultOfLocalStorage = getFromLocalStorage()
+
+  const cityName = resultOfLocalStorage[resultOfLocalStorage.length - 1]; 
+
+  if(cityName) renderAllCards(cityName)
   
 };
 
