@@ -10,6 +10,18 @@ const getFromLocalStorage = () => {
   }
 };
 
+//will work on this later
+//const errorHandling =  () => {
+//$("#").empty();
+
+// const errorContainer = `<div class="callout alert grid-x">
+// <h2 class="cell align-center-middle text-center">Error!</h2>
+//<p class="cell align-center-middle text-center">
+//  City not recognised. Please try again.</p>
+//</div>`;
+//$("#").append(errorContainer);
+//}
+
 const fetchData = async (url) => {
   try {
     const response = await fetch(url);
@@ -18,9 +30,10 @@ const fetchData = async (url) => {
 
     return data;
   } catch (error) {
-    console.log(error);
-  }
+    return alert("City not recognised. Please try again");
+  } 
 };
+
 
 const getDataByCityName = async (event) => {
   
@@ -117,6 +130,15 @@ const renderCitiesFromLocalStorage = () => {
   $("#searched-cities").append(ul);
 };
 
+const getUvIndexClass = (uvIndex) => {
+  if(uvIndex > 2) {
+    return "p-2 btn-primary";
+  } else if(uvIndex < 2){
+    return "p-2 btn-danger";
+  } else {
+    return ""; 
+  }
+}
 
 const renderCurrentDayCard = (data) => {
     $("#current-day").empty(); 
@@ -127,7 +149,7 @@ const renderCurrentDayCard = (data) => {
                 <div class="py-2">Temperature: ${data.temperature} &deg;F</div>
                 <div class="py-2">Humidity: ${data.humidity} % </div>
                 <div class="py-2">Wind Speed: ${data.windSpeed} MPH</div>
-                <div class="py-2">UV Index: ${data.uvi}</div>
+                <div class="py-2">UV Index: <span class="${getUvIndexClass(data.uvi)}">${data.uvi}</span></div>
                 </div>
                 </div>`;
 
