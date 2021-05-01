@@ -30,8 +30,8 @@ Use more of CSS framework to make the application look more visually appealing.
 
 ## Screenshots
 
-![]()
-![]()
+![mani_page](./assets/screenshots/Screenshot_weather_dashboard.png)
+
 
 ## Link To Deployed Application 
 
