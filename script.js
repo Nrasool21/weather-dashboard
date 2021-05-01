@@ -26,27 +26,29 @@ const fetchData = async (url) => {
   try {
     const response = await fetch(url);
 
+    if (response.status === 404) {
+      alert("City not recognised. Please try again");
+    }
+
     const data = await response.json();
 
     return data;
   } catch (error) {
-    return alert("City not recognised. Please try again");
-  } 
+    console.log(error);
+  }
 };
 
-
 const getDataByCityName = async (event) => {
-  
   const target = $(event.target);
   if (target.is("li")) {
     const cityName = target.data("city");
 
-   renderAllCards(cityName);
+    renderAllCards(cityName);
   }
 };
 
 const transformCurrentDayData = (data, name) => {
-  const current = data.current
+  const current = data.current;
   return {
     cityName: name,
     temperature: current.temp,
@@ -54,19 +56,18 @@ const transformCurrentDayData = (data, name) => {
     windSpeed: current.wind_speed,
     date: moment.unix(current.dt).format("MM-DD-YYYY"),
     iconURL: `http://openweathermap.org/img/wn/${current.weather[0].icon}@2x.png`,
-    uvi: current.uvi
+    uvi: current.uvi,
   };
 };
 
 const transformForecastData = (data) => {
-
-return {
+  return {
     date: moment.unix(data.dt).format("MM-DD-YYYY"),
     iconURL: `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
     temperature: data.temp.day,
-    humidity: data.humidity, 
-}
-}
+    humidity: data.humidity,
+  };
+};
 
 const onSubmit = async (event) => {
   event.preventDefault();
@@ -82,12 +83,10 @@ const onSubmit = async (event) => {
   renderCitiesFromLocalStorage();
   $("#city-input").val("");
 
-  renderAllCards(cityName)
- 
+  renderAllCards(cityName);
 };
 
 const renderAllCards = async (cityName) => {
-
   const currentDayUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=imperial&APPID=${API_KEY}`;
 
   const currentDayResponse = await fetchData(currentDayUrl);
@@ -102,11 +101,13 @@ const renderAllCards = async (cityName) => {
 
   cardsData.slice(1, 6).forEach(renderForecastCard);
 
-  const currentDayData = transformCurrentDayData(forecastResponse, currentDayResponse.name);
+  const currentDayData = transformCurrentDayData(
+    forecastResponse,
+    currentDayResponse.name
+  );
 
   renderCurrentDayCard(currentDayData);
-  
-}
+};
 
 const renderCitiesFromLocalStorage = () => {
   $("#searched-cities").empty();
@@ -131,54 +132,54 @@ const renderCitiesFromLocalStorage = () => {
 };
 
 const getUvIndexClass = (uvIndex) => {
-  if(uvIndex > 2) {
+  if (uvIndex > 2) {
     return "p-2 btn-primary";
-  } else if(uvIndex < 2){
+  } else if (uvIndex < 2) {
     return "p-2 btn-danger";
   } else {
-    return ""; 
+    return "";
   }
-}
+};
 
 const renderCurrentDayCard = (data) => {
-    $("#current-day").empty(); 
+  $("#current-day").empty();
 
   const card = `<div class="card my-2">
                 <div class="card-body">
-                <h2>${data.cityName} (${data.date}) <img src="${data.iconURL}" /></h2>
+                <h2>${data.cityName} (${data.date}) <img src="${
+    data.iconURL
+  }" /></h2>
                 <div class="py-2">Temperature: ${data.temperature} &deg;F</div>
                 <div class="py-2">Humidity: ${data.humidity} % </div>
                 <div class="py-2">Wind Speed: ${data.windSpeed} MPH</div>
-                <div class="py-2">UV Index: <span class="${getUvIndexClass(data.uvi)}">${data.uvi}</span></div>
+                <div class="py-2">UV Index: <span class="${getUvIndexClass(
+                  data.uvi
+                )}">${data.uvi}</span></div>
                 </div>
                 </div>`;
 
   $("#current-day").append(card);
-  
 };
 
 const renderForecastCard = (data) => {
-
-    const card = `<div class="card mh-100 bg-primary text-light rounded card-block">
+  const card = `<div class="card mh-100 bg-primary text-light rounded card-block">
                      <h5 class="card-title p-1">${data.date}</h5>
                      <img src="${data.iconURL}"/>
                      <h6 class="card-subtitle mb-2 text-light p-md-2 ">${data.temperature}&deg F</h6>
                      <h6 class="card-subtitle mb-2 text-light p-md-2 ">${data.humidity}%</h6>
                   </div>`;
 
-    $("#forecast-cards-container").append(card);
-    
-}
+  $("#forecast-cards-container").append(card);
+};
 
 const onReady = () => {
   renderCitiesFromLocalStorage();
 
-  const resultOfLocalStorage = getFromLocalStorage()
+  const resultOfLocalStorage = getFromLocalStorage();
 
-  const cityName = resultOfLocalStorage[resultOfLocalStorage.length - 1]; 
+  const cityName = resultOfLocalStorage[resultOfLocalStorage.length - 1];
 
-  if(cityName) renderAllCards(cityName)
-  
+  if (cityName) renderAllCards(cityName);
 };
 
 $("#search-by-city-form").on("submit", onSubmit);
