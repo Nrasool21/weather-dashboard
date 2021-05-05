@@ -149,7 +149,7 @@ const renderCurrentDayCard = (data) => {
                 <h2>${data.cityName} (${data.date}) <img src="${
     data.iconURL
   }" /></h2>
-                <div class="py-2">Temperature: ${data.temperature} &deg;K</div>
+                <div class="py-2">Temperature: ${data.temperature} &deg; K</div>
                 <div class="py-2">Humidity: ${data.humidity} % </div>
                 <div class="py-2">Wind Speed: ${data.windSpeed} MPH</div>
                 <div class="py-2">UV Index: <span class="${getUvIndexClass(
@@ -165,7 +165,7 @@ const renderForecastCard = (data) => {
   const card = `<div class="card mh-100 bg-primary text-light rounded card-block">
                      <h5 class="card-title p-1">${data.date}</h5>
                      <img src="${data.iconURL}"/>
-                     <h6 class="card-subtitle mb-2 text-light p-md-2 ">${data.temperature}&deg F</h6>
+                     <h6 class="card-subtitle mb-2 text-light p-md-2 ">${data.temperature}&deg K</h6>
                      <h6 class="card-subtitle mb-2 text-light p-md-2 ">${data.humidity}%</h6>
                   </div>`;
 
