@@ -149,7 +149,7 @@ const renderCurrentDayCard = (data) => {
                 <h2>${data.cityName} (${data.date}) <img src="${
     data.iconURL
   }" /></h2>
-                <div class="py-2">Temperature: ${data.temperature} &deg;F</div>
+                <div class="py-2">Temperature: ${data.temperature} &deg;K</div>
                 <div class="py-2">Humidity: ${data.humidity} % </div>
                 <div class="py-2">Wind Speed: ${data.windSpeed} MPH</div>
                 <div class="py-2">UV Index: <span class="${getUvIndexClass(
